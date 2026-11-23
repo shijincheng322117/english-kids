@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Kid - 部署到Netlify</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: white;
+            color: #333;
+            padding: 40px;
+            border-radius: 20px;
+        }
+        h1 { color: #667eea; }
+        .step {
+            background: #f0f0f0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        .btn:hover {
+            background: #764ba2;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #e83e8c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 如何部署 English Kid 到免费网址</h1>
+
+        <h2>方案1：Netlify（推荐）</h2>
+        <div class="step">
+            <h3>步骤1：打开Netlify</h3>
+            <a href="https://app.netlify.com/drop" target="_blank" class="btn">打开 Netlify Drop</a>
+        </div>
+
+        <div class="step">
+            <h3>步骤2：拖拽文件夹</h3>
+            <p>将整个 <code>English_Kid</code> 文件夹拖到网页中的虚线框内</p>
+        </div>
+
+        <div class="step">
+            <h3>步骤3：完成！</h3>
+            <p>Netlify会自动生成一个免费网址，类似：</p>
+            <code>https://random-name-12345.netlify.app</code>
+            <p>这个网址可以永久访问，在任何设备上打开！</p>
+        </div>
+
+        <hr style="margin: 40px 0;">
+
+        <h2>方案2：GitHub Pages（永久免费）</h2>
+        <div class="step">
+            <h3>步骤1：创建GitHub仓库</h3>
+            <a href="https://github.com/new" target="_blank" class="btn">创建新仓库</a>
+            <p>仓库名：<code>english-kid</code></p>
+            <p>设置为 Public（公开）</p>
+        </div>
+
+        <div class="step">
+            <h3>步骤2：上传文件</h3>
+            <p>在终端运行以下命令：</p>
+            <pre style="background:#2d2d2d;color:#f8f8f2;padding:15px;border-radius:8px;overflow-x:auto;">
+cd /Users/admin/dcx/English_Kid
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/你的用户名/english-kid.git
+git branch -M main
+git push -u origin main</pre>
+        </div>
+
+        <div class="step">
+            <h3>步骤3：启用 GitHub Pages</h3>
+            <p>1. 进入仓库的 Settings → Pages</p>
+            <p>2. Source 选择 <code>main</code> 分支</p>
+            <p>3. 点击 Save</p>
+            <p>网址：<code>https://你的用户名.github.io/english-kid</code></p>
+        </div>
+
+        <hr style="margin: 40px 0;">
+
+        <h2>方案3：Vercel（专业推荐）</h2>
+        <div class="step">
+            <h3>一键部署</h3>
+            <a href="https://vercel.com/new" target="_blank" class="btn">部署到 Vercel</a>
+            <p>导入项目，点击Deploy即可</p>
+            <p>获得免费域名：<code>english-kid.vercel.app</code></p>
+        </div>
+
+        <hr style="margin: 40px 0;">
+
+        <div style="background:#e7f3ff;padding:20px;border-radius:10px;border-left:5px solid #2196F3;">
+            <h3>✨ 推荐：Netlify Drop</h3>
+            <p><strong>最简单！</strong>只需拖拽文件夹，30秒完成部署，立即获得免费网址！</p>
+            <a href="https://app.netlify.com/drop" target="_blank" class="btn" style="background:#00C7B7;">立即部署 →</a>
+        </div>
+    </div>
+</body>
+</html>
