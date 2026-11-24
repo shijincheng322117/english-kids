@@ -278,6 +278,15 @@ const app = {
     },
 
     // ==================== 语音识别初始化 ====================
+    // 显示录音状态（错误用红色）
+    setRecStatus(msg, isError) {
+        const el = document.getElementById('recordStatus');
+        if (el) {
+            el.textContent = msg || '';
+            el.className = 'record-status' + (isError ? ' error' : '');
+        }
+    },
+
     initSpeechRecognition() {
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -286,17 +295,48 @@ const app = {
             this.recognition.continuous = false;
             this.recognition.interimResults = false;
 
+            this.recognition.onstart = () => {
+                this._recGotResult = false;
+                this.setRecStatus('🎤 正在听，请说话…');
+            };
+
+            this.recognition.onaudiostart = () => {
+                this.setRecStatus('🎤 麦克风已打开，请说话…');
+            };
+
+            this.recognition.onspeechstart = () => {
+                this.setRecStatus('👂 听到声音了，识别中…');
+            };
+
             this.recognition.onresult = (event) => {
+                this._recGotResult = true;
                 const transcript = event.results[0][0].transcript;
+                this.setRecStatus('✅ 识别成功！');
                 this.handleUserResponse(transcript);
+            };
+
+            this.recognition.onnomatch = () => {
+                this.setRecStatus('😅 没听清，再大声说一次吧', true);
             };
 
             this.recognition.onerror = (event) => {
                 console.error('Speech recognition error:', event.error);
+                const msg = {
+                    'not-allowed': '⚠️ 麦克风被拒绝：点 Safari 地址栏“aA”→ 网站设置 → 麦克风 → 允许，然后刷新重试',
+                    'service-not-allowed': '⚠️ 苹果听写服务不可用：去 iPhone 设置 → 通用 → 键盘 → 打开“启用听写”',
+                    'no-speech': '🔇 没听到声音：靠近一点、大声再说一次',
+                    'network': '📶 网络问题：语音识别需要联网，检查网络后重试',
+                    'aborted': '',
+                    'audio-capture': '⚠️ 找不到麦克风：检查设备麦克风是否正常'
+                }[event.error] || ('识别出错（' + event.error + '），也可以直接点下面的选项作答');
+                if (msg) this.setRecStatus(msg, true);
                 this.stopRecording();
             };
 
             this.recognition.onend = () => {
+                if (this.isRecording && !this._recGotResult) {
+                    this.setRecStatus('好像没听到，可以再点一次，或者直接点选项作答', true);
+                }
                 this.stopRecording();
             };
         }
@@ -452,6 +492,7 @@ const app = {
         }
 
         const conv = this.currentUnit.conversations[this.chatStep];
+        this.setRecStatus('');
         this.addMessage(conv.ai, 'ai');
         this.speak(conv.ai);
 
@@ -548,6 +589,8 @@ const app = {
         }
 
         this.isRecording = true;
+        this._recGotResult = false;
+        this.setRecStatus('🎤 正在启动麦克风…');
         const btn = document.getElementById('recordBtn');
         btn.textContent = '🎤 正在听...';
         btn.className = 'record-btn listening';
@@ -572,6 +615,7 @@ const app = {
         const englishText = text.replace(/[\u4e00-\u9fa5]/g, '').replace(/[。！，]/g, '');
 
         if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(englishText);
             utterance.lang = 'en-US';
             utterance.rate = 0.9;
