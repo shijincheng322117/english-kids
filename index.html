@@ -236,9 +236,23 @@
         /* 录音控制 */
         .record-controls {
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
             margin-top: 20px;
+        }
+
+        .record-status {
+            min-height: 24px;
+            font-size: 15px;
+            color: #666;
+            text-align: center;
+            padding: 0 16px;
+        }
+
+        .record-status.error {
+            color: #e03131;
+            font-weight: bold;
         }
 
         .record-btn {
@@ -570,6 +584,7 @@
                     <button id="recordBtn" class="record-btn start" onclick="app.toggleRecording()">
                         🎤 点击说话
                     </button>
+                    <div id="recordStatus" class="record-status"></div>
                 </div>
             </div>
         </div>
